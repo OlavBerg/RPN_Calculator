@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void clear_stdin(void) {
+    while (getchar() != '\n');
+}
+
 static bool is_digit(char c) {
     return c >= '0' && c <= '9';
 }
@@ -16,12 +20,15 @@ int main(void) {
     
     while (true) {
         bool running = true;
+        bool valid_input = true;
+
         printf("Enter expression to calculate: ");
 
         char num_str[16];
         size_t num_str_ctr = 0;
         bool num_flag = false;
 
+        
         while (true) {
             char c = getchar();
 
@@ -57,6 +64,7 @@ int main(void) {
             int num1 = stack_pop();
             int result;
 
+            bool valid_operator = true;
             switch(c) {
                 case '+':
                 result = num1 + num2;
@@ -73,6 +81,14 @@ int main(void) {
                 case '/':
                 result = num1 / num2;
                 break;
+
+                default:
+                valid_operator = false;
+            }
+
+            if (!valid_operator) {
+                valid_input = false;
+                break;
             }
 
             stack_push(result);
@@ -81,6 +97,12 @@ int main(void) {
         if (!running) {
             printf("Quitting the calculator.\n");
             break;
+        }
+
+        if (!valid_input) {
+            printf("ERROR: Invalid input\n");
+            clear_stdin();
+            continue;
         }
 
         printf("Result: %d\n", stack_pop());
