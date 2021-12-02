@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 void clear_stdin(void) {
     while (getchar() != '\n');
@@ -16,7 +17,6 @@ int main(void) {
     
     printf("Welcome to the RPN Calculator!\n");
     printf("Press 'q' to quit.\n\n");
-
     
     while (true) {
         bool running = true;
@@ -27,8 +27,8 @@ int main(void) {
         char num_str[16];
         size_t num_str_ctr = 0;
         bool num_flag = false;
+        size_t num_of_operands = 0;
 
-        
         while (true) {
             char c = getchar();
 
@@ -53,12 +53,20 @@ int main(void) {
                 num_str[num_str_ctr] = '\0';
                 num_str_ctr = 0;
                 stack_push(atoi(num_str));
+                num_of_operands++;
                 num_flag = false;
             }
 
             if (c == ' ') {
                 continue;
             }
+
+            if (stack_size() < 2 || num_of_operands > 2) {
+                valid_input = false;
+                break;
+            }
+
+            num_of_operands = 0;
 
             int num2 = stack_pop();
             int num1 = stack_pop();
@@ -100,8 +108,9 @@ int main(void) {
         }
 
         if (!valid_input) {
-            printf("ERROR: Invalid input\n");
             clear_stdin();
+            stack_clear();
+            printf("ERROR: Invalid input\n");
             continue;
         }
 

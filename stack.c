@@ -9,12 +9,14 @@ typedef struct Node {
 } Node;
 
 Node *head = NULL;
+size_t size = 0;
 
 void stack_push(int number) {
     Node *new = malloc(sizeof(Node));
     new->number = number;
     new->next = head;
-    head = new; 
+    head = new;
+    size++; 
 }
 
 int stack_pop(void) {
@@ -23,6 +25,17 @@ int stack_pop(void) {
     Node *head_old = head;
     head = head->next;
     free(head_old);
+    size--;
 
     return number;
+}
+
+size_t stack_size(void) {
+    return size;
+}
+
+void stack_clear(void) {
+    while (size > 0) {
+        stack_pop();
+    }
 }
