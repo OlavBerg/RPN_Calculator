@@ -28,18 +28,21 @@ int main(void) {
             }
 
             if (is_digit(c)) {
-                num_flag = true;
+                if (!num_flag) {
+                    num_flag = true;
+                }
                 num_str[num_str_ctr++] = c;
                 continue;
             }
 
+            if (num_flag) {
+                num_str[num_str_ctr] = '\0';
+                num_str_ctr = 0;
+                stack_push(atoi(num_str));
+                num_flag = false;
+            }
+
             if (c == ' ') {
-                if (num_flag) {
-                    num_str[num_str_ctr] = '\0';
-                    num_str_ctr = 0;
-                    stack_push(atoi(num_str));
-                    num_flag = false;
-                }
                 continue;
             }
 
