@@ -13,7 +13,9 @@ int main(void) {
     printf("Welcome to the RPN Calculator!\n");
     printf("Press 'q' to quit.\n\n");
 
+    
     while (true) {
+        bool running = true;
         printf("Enter expression to calculate: ");
 
         char num_str[16];
@@ -22,6 +24,11 @@ int main(void) {
 
         while (true) {
             char c = getchar();
+
+            if (c == 'q') {
+                running = false;
+                break;
+            }
 
             if (c == '\n') {
                 break;
@@ -69,6 +76,11 @@ int main(void) {
             }
 
             stack_push(result);
+        }
+
+        if (!running) {
+            printf("Quitting the calculator.\n");
+            break;
         }
 
         printf("Result: %d\n", stack_pop());
