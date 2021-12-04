@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Node {
     int number;
@@ -35,7 +36,14 @@ size_t stack_size(void) {
 }
 
 void stack_clear(void) {
-    while (size > 0) {
-        stack_pop();
+    while (head) {
+        Node *head_old = head;
+        head = head->next;
+        free(head_old);
     }
+    size = 0;
+}
+
+bool stack_empty(void) {
+    return size == 0;
 }

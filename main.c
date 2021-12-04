@@ -15,27 +15,16 @@ static bool is_digit(char c) {
 
 int main(void) {
     
-    printf("Welcome to the RPN Calculator!\n");
-    printf("Press 'q' to quit.\n\n");
-    
     while (true) {
-        bool running = true;
-        bool valid_input = true;
-
-        printf("Enter expression to calculate: ");
-
         char num_str[16];
         size_t num_str_ctr = 0;
         bool num_flag = false;
-        size_t num_of_operands = 0;
+        bool valid_expression = true;
+
+        printf("Enter expression to calculate: ");
 
         while (true) {
             char c = getchar();
-
-            if (c == 'q') {
-                running = false;
-                break;
-            }
 
             if (c == '\n') {
                 break;
@@ -45,28 +34,28 @@ int main(void) {
                 if (!num_flag) {
                     num_flag = true;
                 }
-                num_str[num_str_ctr++] = c;
+                num_str[num_str_ctr] = c;
                 continue;
             }
 
             if (num_flag) {
-                num_str[num_str_ctr] = '\0';
-                num_str_ctr = 0;
                 stack_push(atoi(num_str));
-                num_of_operands++;
+                num_str_ctr = 0;
                 num_flag = false;
+                continue;
             }
 
             if (c == ' ') {
                 continue;
             }
 
-            if (stack_size() < 2 || num_of_operands > 2) {
-                valid_input = false;
+            // c is an operator
+
+            if (stack_size() < 2) {
+                valid_expression = false;
+                clear_stdin();
                 break;
             }
-
-            num_of_operands = 0;
 
             int num2 = stack_pop();
             int num1 = stack_pop();
@@ -95,25 +84,26 @@ int main(void) {
             }
 
             if (!valid_operator) {
-                valid_input = false;
+                valid_expression = false;
+                clear_stdin();
                 break;
             }
 
             stack_push(result);
         }
 
-        if (!running) {
-            printf("Quitting the calculator.\n");
-            break;
+        if (stack_size() != 1) {
+            valid_expression = false;
         }
 
-        if (!valid_input) {
-            clear_stdin();
+        if (!valid_expression) {
+            printf("ERROR: Invalid expression!\n");
             stack_clear();
-            printf("ERROR: Invalid input\n");
             continue;
         }
 
         printf("Result: %d\n", stack_pop());
     }
+
+    return 0;
 }
