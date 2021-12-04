@@ -52,7 +52,6 @@ int main(void) {
                 stack_push(atoi(num_str));
                 num_str_ctr = 0;
                 num_flag = false;
-                continue;
             }
 
             if (c == ' ') {
