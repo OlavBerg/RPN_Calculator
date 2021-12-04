@@ -15,6 +15,10 @@ static bool is_digit(char c) {
 
 int main(void) {
     
+    printf("Welcome to the RPN Calculator!\n");
+    printf("Type 'q' to quit.\n\n");
+    bool running = true;
+
     while (true) {
         char num_str[16];
         size_t num_str_ctr = 0;
@@ -25,6 +29,12 @@ int main(void) {
 
         while (true) {
             char c = getchar();
+
+            if (c == 'q' && stack_size() == 0) {
+                running = false;
+                clear_stdin();
+                break;
+            }
 
             if (c == '\n') {
                 break;
@@ -92,6 +102,10 @@ int main(void) {
             stack_push(result);
         }
 
+        if (!running) {
+            break;
+        }
+
         if (stack_size() != 1) {
             valid_expression = false;
         }
@@ -105,5 +119,6 @@ int main(void) {
         printf("Result: %d\n", stack_pop());
     }
 
+    printf("Quitting the calculator.\n");
     return 0;
 }
