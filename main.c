@@ -49,7 +49,7 @@ int main(void) {
             }
 
             if (num_flag) {
-                stack_push(atoi(num_str));
+                stack_push(atof(num_str));
                 num_str_ctr = 0;
                 num_flag = false;
             }
@@ -66,9 +66,9 @@ int main(void) {
                 break;
             }
 
-            int num2 = stack_pop();
-            int num1 = stack_pop();
-            int result;
+            float num2 = stack_pop();
+            float num1 = stack_pop();
+            float result;
 
             bool valid_operator = true;
             switch(c) {
@@ -115,7 +115,7 @@ int main(void) {
             continue;
         }
 
-        printf("Result: %d\n", stack_pop());
+        printf("Result: %f\n", stack_pop());
     }
 
     printf("Quitting the calculator.\n");

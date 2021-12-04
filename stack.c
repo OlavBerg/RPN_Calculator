@@ -5,14 +5,14 @@
 #include <stdbool.h>
 
 typedef struct Node {
-    int number;
+    float number;
     struct Node *next;
 } Node;
 
 Node *head = NULL;
 size_t size = 0;
 
-void stack_push(int number) {
+void stack_push(float number) {
     Node *new = malloc(sizeof(Node));
     new->number = number;
     new->next = head;
@@ -20,8 +20,8 @@ void stack_push(int number) {
     size++; 
 }
 
-int stack_pop(void) {
-    int number = head->number;
+float stack_pop(void) {
+    float number = head->number;
     
     Node *head_old = head;
     head = head->next;
